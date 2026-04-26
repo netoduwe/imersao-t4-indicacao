@@ -1,0 +1,50 @@
+---
+interface Props {
+    refCode: string;
+}
+
+const { refCode } = Astro.props;
+const referralUrl = `https://pay.hotmart.com/Y105539078H?off=rzzgx17r&sck=${refCode}`;
+---
+
+<div class="card-premium space-y-4">
+    <div class="flex items-center justify-between">
+        <h3 class="font-bold text-sage-800 text-lg">Seu Link Único</h3>
+        <span class="px-3 py-1 bg-sage-50 text-sage-600 text-xs font-bold rounded-full uppercase tracking-wider">Checkout Seguro</span>
+    </div>
+    
+    <div class="relative group">
+        <div class="w-full p-4 bg-sage-50 border border-sage-100 rounded-2xl text-sage-600 font-mono text-sm break-all pr-12">
+            {referralUrl}
+        </div>
+        <button 
+            id="copy-btn"
+            data-url={referralUrl}
+            class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white border border-sage-100 rounded-xl hover:bg-sage-600 hover:text-white transition-all shadow-sm"
+            title="Copiar Link"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+    </div>
+
+    <p class="text-xs text-sage-400 italic">
+        * Use este link para indicar novos alunos. Quando a compra for aprovada, você pontua automaticamente.
+    </p>
+</div>
+
+<script>
+    const btn = document.getElementById('copy-btn');
+    btn?.addEventListener('click', () => {
+        const url = btn.getAttribute('data-url') || '';
+        navigator.clipboard.writeText(url);
+        
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        btn.classList.add('bg-sage-600', 'text-white');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalHtml;
+            btn.classList.remove('bg-sage-600', 'text-white');
+        }, 2000);
+    });
+</script>

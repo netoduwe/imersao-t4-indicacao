@@ -1,0 +1,43 @@
+---
+interface LeaderboardItem {
+    name: string;
+    sales: number;
+}
+
+interface Props {
+    items: LeaderboardItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="card-premium">
+    <div class="flex items-center justify-between mb-6">
+        <h3 class="font-bold text-sage-800 text-lg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-premium-gold"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            Top 10 Indicadores
+        </h3>
+        <span class="text-xs text-sage-400">Atualizado agora</span>
+    </div>
+
+    <div class="space-y-3">
+        {items.length > 0 ? items.map((item, index) => (
+            <div class={`flex items-center justify-between p-4 rounded-2xl transition-colors ${index === 0 ? 'bg-sage-50 border border-sage-100' : 'hover:bg-sage-50/50'}`}>
+                <div class="flex items-center gap-4">
+                    <span class={`w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm ${
+                        index === 0 ? 'bg-premium-gold text-white' : 
+                        index === 1 ? 'bg-slate-300 text-slate-700' :
+                        index === 2 ? 'bg-amber-600/20 text-amber-800' :
+                        'bg-sage-100 text-sage-400'
+                    }`}>
+                        {index + 1}
+                    </span>
+                    <span class={`font-medium ${index === 0 ? 'text-sage-800' : 'text-sage-600'}`}>{item.name}</span>
+                </div>
+                <span class="font-bold text-sage-800">{item.sales} <span class="text-[10px] font-normal text-sage-400 uppercase">vendas</span></span>
+            </div>
+        )) : (
+            <p class="text-center py-8 text-sage-400 italic">Ainda não há dados no ranking.</p>
+        )}
+    </div>
+</div>

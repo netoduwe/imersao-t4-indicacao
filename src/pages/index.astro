@@ -1,0 +1,256 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LinkCard from '../components/LinkCard.astro';
+import ProgressSection from '../components/ProgressSection.astro';
+import Leaderboard from '../components/Leaderboard.astro';
+---
+
+<Layout title="Programa de Indicação">
+    <div slot="nav-actions" id="user-nav" class="hidden">
+        <div class="flex items-center gap-3 bg-sage-50 px-4 py-2 rounded-2xl border border-sage-100">
+            <div class="w-8 h-8 bg-sage-200 rounded-full flex items-center justify-center text-sage-600 font-bold text-xs" id="user-initials">
+                ??
+            </div>
+            <span class="text-sm font-medium text-sage-700 hidden md:inline" id="user-name-display">Olá, Usuário</span>
+        </div>
+        <button id="logout-btn" class="text-sage-400 hover:text-sage-600 p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-12">
+            <div class="relative min-h-[500px]">
+                <!-- OVERLAY DE LOGIN -->
+                <div id="login-overlay" class="absolute inset-0 z-20 flex items-center justify-center bg-off-white/40 backdrop-blur-[2px] transition-all duration-500 rounded-3xl">
+                    <div class="card-premium w-full max-w-md shadow-2xl border-sage-200 animate-in fade-in zoom-in duration-500 bg-white/95 p-10">
+                        <div class="text-center space-y-4">
+                            <div class="w-16 h-16 bg-sage-600 text-white rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-lg">🚀</div>
+                            <h2 class="text-2xl font-bold text-sage-800 tracking-tight">Ative seu Link</h2>
+                            <p class="text-sage-500 text-sm">Digite o e-mail da compra para liberar seus links únicos.</p>
+                            
+                            <form id="login-form" class="space-y-3 pt-4">
+                                <input 
+                                    type="email" 
+                                    id="login-email"
+                                    required
+                                    placeholder="seu@email.com" 
+                                    class="w-full px-5 py-4 rounded-2xl border border-sage-100 bg-sage-50 focus:outline-none focus:ring-2 focus:ring-sage-500 transition-all text-center font-medium"
+                                />
+                                <button type="submit" id="submit-btn" class="btn-shiny w-full py-4 text-lg font-bold">
+                                    Ver meus Links &rarr;
+                                </button>
+                                <p id="login-error" class="text-red-500 text-xs hidden italic">E-mail não encontrado na base de compradores.</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO PERSONALIZADO -->
+                <div id="personalized-content" class="space-y-12 filter blur-md pointer-events-none transition-all duration-700">
+                    <div id="progress-container">
+                        <ProgressSection sales={0} />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div id="link-card-normal"></div>
+                        <div id="link-card-vip"></div>
+                    </div>
+
+                    <!-- CARD DE COPY (DINÂMICO) -->
+                    <div id="referral-copy-card" class="hidden animate-in slide-in-from-top duration-700">
+                        <div class="card-premium space-y-6 border-sage-600/20 bg-sage-50/10 p-8">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <h3 class="font-bold text-sage-800 flex items-center gap-2">
+                                    <span class="text-lg">✍️</span> Sugestão de Convite
+                                </h3>
+                                <!-- SELETOR DE TIPO -->
+                                <div class="flex bg-white border border-sage-100 p-1 rounded-xl shadow-sm self-start">
+                                    <button id="toggle-normal" class="px-4 py-2 text-[10px] font-bold rounded-lg transition-all bg-sage-600 text-white shadow-sm">NORMAL</button>
+                                    <button id="toggle-vip" class="px-4 py-2 text-[10px] font-bold rounded-lg transition-all text-sage-400 hover:text-sage-600">VIP</button>
+                                </div>
+                            </div>
+
+                            <div class="relative bg-white border border-sage-100 rounded-2xl p-6 text-sm text-sage-600 leading-relaxed italic shadow-inner" id="copy-text-area">
+                                <!-- Texto dinâmico aqui -->
+                            </div>
+                            
+                            <button id="copy-text-btn" class="btn-shiny w-full py-4 flex items-center justify-center gap-2 text-sm font-bold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                Copiar Texto para WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRÊMIOS -->
+            <section class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-sage-800 tracking-tight">Prêmios do Programa</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-8 bg-white border border-sage-100 rounded-[2.5rem] space-y-4 shadow-sm">
+                        <div class="w-14 h-14 bg-sage-50 text-sage-600 rounded-2xl flex items-center justify-center text-2xl font-bold">🎁</div>
+                        <h5 class="font-bold text-sage-800 text-lg">3 Vendas</h5>
+                        <p class="text-sm text-sage-500 leading-relaxed">Pack de 5 E-books de Nutrição Esportiva.</p>
+                    </div>
+                    <div class="p-8 bg-white border border-sage-100 rounded-[2.5rem] space-y-4 shadow-sm border-premium-gold/20">
+                        <div class="w-14 h-14 bg-sage-50 text-sage-600 rounded-2xl flex items-center justify-center text-2xl font-bold">💎</div>
+                        <h5 class="font-bold text-sage-800 text-lg">10 Vendas</h5>
+                        <p class="text-sm text-sage-500 leading-relaxed">Upgrade para Ingresso VIP + Kit Físico.</p>
+                    </div>
+                    <div class="p-8 bg-white border border-sage-100 rounded-[2.5rem] space-y-4 shadow-sm">
+                        <div class="w-14 h-14 bg-sage-50 text-sage-600 rounded-2xl flex items-center justify-center text-2xl font-bold">👑</div>
+                        <h5 class="font-bold text-sage-800 text-lg">25 Vendas</h5>
+                        <p class="text-sm text-sage-500 leading-relaxed">Acesso ao Backstage e Jantar Exclusivo.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <aside class="space-y-8">
+            <div id="leaderboard-container">
+                 <Leaderboard items={[]} />
+            </div>
+            
+            <div class="p-8 rounded-3xl bg-sage-50 border border-sage-100 text-center space-y-4 shadow-sm">
+                <h4 class="font-bold text-sage-800 uppercase text-[10px] tracking-widest">Como Funciona?</h4>
+                <p class="text-sm text-sage-500 leading-relaxed">Indique amigos com seu link. Cada venda via seu link soma pontos. Prêmios automáticos.</p>
+            </div>
+        </aside>
+    </div>
+</Layout>
+
+<script>
+    import { supabase } from '../lib/supabase';
+
+    const form = document.getElementById('login-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const overlay = document.getElementById('login-overlay');
+    const content = document.getElementById('personalized-content');
+    const nav = document.getElementById('user-nav');
+    const errorMsg = document.getElementById('login-error');
+    const copyCard = document.getElementById('referral-copy-card');
+
+    let currentLinks = { normal: '', vip: '' };
+    let currentType = 'normal';
+
+    function updateCopyText() {
+        const url = currentType === 'normal' ? currentLinks.normal : currentLinks.vip;
+        const textArea = document.getElementById('copy-text-area');
+        if (textArea) {
+            textArea.innerText = `Vou participar dessa imersão de um dia inteiro de atualização em emagrecimento e consegui um desconto para convidar um amigo.
+
+Veja se te interessa, vai ser num sábado (16/05) das 9h às 18h. É a 4ª edição desse evento com o Ney Felipe. 
+
+Aqui tem o link para comprar ingressos com esse desconto que consegui:
+${url}`;
+        }
+    }
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (submitBtn) submitBtn.textContent = 'Verificando...';
+        
+        const email = (document.getElementById('login-email') as HTMLInputElement).value;
+        
+        const { data: user, error } = await supabase
+            .from('imersao_t4_profiles')
+            .select('*, imersao_t4_purchases(count)')
+            .eq('email', email.toLowerCase())
+            .single();
+
+        if (!error && user) {
+            const salesCount = user.imersao_t4_purchases?.[0]?.count || 0;
+            const refCode = user.ref_code;
+
+            overlay?.classList.add('opacity-0', 'pointer-events-none');
+            content?.classList.remove('blur-md', 'pointer-events-none');
+            nav?.classList.remove('hidden');
+            copyCard?.classList.remove('hidden');
+            errorMsg?.classList.add('hidden');
+
+            document.getElementById('user-name-display')!.textContent = `Olá, ${user.name || 'Indicador'}`;
+            document.getElementById('user-initials')!.textContent = (user.name || 'ID').substring(0, 2).toUpperCase();
+            
+            currentLinks.normal = `https://pay.hotmart.com/Y105539078H?off=rzzgx17r&checkoutMode=10&offDiscount=CONVITE&sck=${refCode}`;
+            currentLinks.vip = `https://pay.hotmart.com/W93818806I?off=l3p9qwc8&checkoutMode=10&offDiscount=CONVITE&sck=${refCode}`;
+
+            const renderLinkCard = (title: string, url: string, isVip = false) => `
+                <div class="card-premium space-y-4 ${isVip ? 'border-premium-gold/40 bg-sage-50/20' : ''}">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-sage-800 text-sm tracking-tight">${title}</h3>
+                        <span class="px-2 py-0.5 bg-white text-sage-500 text-[9px] font-bold rounded-full uppercase border border-sage-100">${isVip ? '💎 VIP' : 'Normal'}</span>
+                    </div>
+                    <div class="relative">
+                        <div class="w-full p-4 bg-white border border-sage-50 rounded-2xl text-[9px] font-mono break-all pr-12 text-sage-400">
+                            ${url}
+                        </div>
+                        <button class="copy-btn absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-sage-50 text-sage-600 rounded-xl hover:bg-sage-600 hover:text-white transition-all shadow-sm" data-url="${url}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('link-card-normal')!.innerHTML = renderLinkCard('Ingresso Normal', currentLinks.normal);
+            document.getElementById('link-card-vip')!.innerHTML = renderLinkCard('Ingresso VIP', currentLinks.vip, true);
+
+            updateCopyText();
+
+            // EVENTOS DE CÓPIA DE LINK
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const url = btn.getAttribute('data-url') || '';
+                    navigator.clipboard.writeText(url);
+                    const originalIcon = btn.innerHTML;
+                    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+                    setTimeout(() => btn.innerHTML = originalIcon, 2000);
+                });
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            errorMsg?.classList.remove('hidden');
+            if (submitBtn) submitBtn.textContent = 'Ver meus Links &rarr;';
+        }
+    });
+
+    // CONTROLE DO SELETOR DE COPY
+    const btnNormal = document.getElementById('toggle-normal');
+    const btnVip = document.getElementById('toggle-vip');
+
+    btnNormal?.addEventListener('click', () => {
+        currentType = 'normal';
+        btnNormal.classList.add('bg-sage-600', 'text-white');
+        btnNormal.classList.remove('text-sage-400');
+        btnVip?.classList.remove('bg-sage-600', 'text-white');
+        btnVip?.classList.add('text-sage-400');
+        updateCopyText();
+    });
+
+    btnVip?.addEventListener('click', () => {
+        currentType = 'vip';
+        btnVip.classList.add('bg-sage-600', 'text-white');
+        btnVip.classList.remove('text-sage-400');
+        btnNormal?.classList.remove('bg-sage-600', 'text-white');
+        btnNormal?.classList.add('text-sage-400');
+        updateCopyText();
+    });
+
+    document.getElementById('copy-text-btn')?.addEventListener('click', () => {
+        const text = document.getElementById('copy-text-area')?.innerText || '';
+        navigator.clipboard.writeText(text);
+        const btn = document.getElementById('copy-text-btn');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Texto Copiado! ✓';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
+    });
+
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+        location.reload();
+    });
+</script>
