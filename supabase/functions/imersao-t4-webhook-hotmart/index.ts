@@ -52,6 +52,14 @@ serve(async (req) => {
           console.log(`Profile ready for buyer: ${buyerEmail} with code ${newRefCode}`)
       }
 
+      // 1.5 ATUALIZAR BARRA DE ESCASSEZ (Lote Ativo)
+      const { error: loteError } = await supabase.rpc('increment_imersao_lote')
+      if (loteError) {
+          console.error('Erro ao incrementar barra do lote:', loteError)
+      } else {
+          console.log('Barra de lote incrementada com sucesso (+1)')
+      }
+
       // 2. REGISTRAR A INDICAÇÃO (Se houver sck)
       if (sck) {
         const { data: referrer, error: refError } = await supabase
