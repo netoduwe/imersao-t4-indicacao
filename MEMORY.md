@@ -1,4 +1,5 @@
 # MEMORY - Projeto Indicações Imersão T4
+*Última atualização: 2026-05-12 15:43*
 
 ## 📌 Contexto
 Plataforma de indicações para a 4ª edição da Imersão (Emagrecimento). Compradores ganham links únicos para indicar amigos e ganhar prêmios.
